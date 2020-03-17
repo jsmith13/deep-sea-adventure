@@ -1,6 +1,7 @@
 ### This script holds some utility functions.
 
 import numpy as np
+from scipy.stats import randint
 
 ## funtion categorize_token
 # takes a vector of token values x
@@ -49,18 +50,14 @@ def expand_vector(x):
     
     return(x)
     
-## function sample_weights
-# takes a vector of player placements and an integer number of players
-# returns a vector of weights
-def sample_weights(x, players):
-    # declare an empty array
-    weights = np.array([])
-    
-    # weight the winning cases more highly
-    for i in range(len(x)):
-        if x[i] == 0:
-            weights = np.append(weights, 1 / players)
-        else:
-            weights = np.append(weights, 1 - (1/players))
-    
-    return weights
+## function death_drop
+# takes a player inventory
+# returns an index indicating which token to drop
+def death_drop(inventory):
+    # create a vector of zeroes
+    inventory_mask = np.zeros(len(inventory))
+
+    # select a token at random
+    inventory_mask[randint.rvs(0, len(inventory))] = 1
+
+    return inventory_mask

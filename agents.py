@@ -276,7 +276,7 @@ class PlayerAgent:
             # fit the decision model to the target Q-table
             model.fit(gamestate_array, target_array, batch_size = 64, epochs = 100, verbose = 0)
         
-        # update the target weights
+    # update the target weights
     def update_target_weights(self):
         # update turn around weights
         weights = self.turn_around_model.get_weights()
@@ -298,3 +298,10 @@ class PlayerAgent:
         for i in range(len(target_weights)):
             target_weights[i] = weights[i]
         self.drop_target_model.set_weights(target_weights)
+        
+    # save models
+    def save_models(self, filepath = "./models/", identifier = ""):
+        self.turn_around_model.save(filepath + "turn_around_model_" + identifier)
+        self.pick_up_model.save(filepath + "pick_up_model_" + identifier)
+        self.drop_model.save(filepath + "drop_model_" + identifier)
+    

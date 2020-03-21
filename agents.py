@@ -6,7 +6,6 @@ import pandas as pd
 from collections import deque
 import random
 from keras import Model, layers, regularizers, optimizers
-from keras.utils import to_categorical
 from keras.callbacks import EarlyStopping
 from keras.models import load_model
 from scipy.stats import uniform, randint
@@ -20,8 +19,6 @@ class PlayerAgent:
         self.epsilon = 1.0
         self.epsilon_min = 0.01
         self.epsilon_decay = 0.995
-        self.learning_rate = 0.005
-        self.tau = .125
         self.batch_size = 512
 
         # a queue to hold trials and results
@@ -305,3 +302,8 @@ class PlayerAgent:
         self.pick_up_model.save(filepath + "pick_up_model_" + identifier)
         self.drop_model.save(filepath + "drop_model_" + identifier)
     
+    # load models
+    def load_models(self, filepath = "./models/", identifier = ""):
+        self.turn_around_model = load_model(filepath + "turn_around_model_" + identifier)
+        self.pick_up_model = load_model(filepath + "pick_up_model_" + identifier)
+        self.drop_model = load_model(filepath + "drop_model_" + identifier)

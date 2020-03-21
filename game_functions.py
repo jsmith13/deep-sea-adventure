@@ -308,3 +308,45 @@ def simulate_game(players, player_agent):
         (state_drop_token, action_turn_around),
         placement
     )
+
+## function compare_models
+# takes two tuples of models and an integer number of games
+# simulates games and returns the number of wins for each
+def compare_models(player_agent_1, player_agent_2, games = 1000):
+    # initiate counter to track win totals
+    wins = np.zeros(2)
+    
+    for i in range(games):
+        # initiate a new game state
+        game = GameState(6)
+
+        # start turn counter; declare a flag for game end
+        turn = 0
+        continue_game = True
+
+        # randomly assign player_agent_1 and player_agent_2 to even/odd turns
+        player_agent_1_turns = randint.rvs(0, 1)
+
+        # take turns until the game is over
+        while continue_game:
+            # use player_agent_1 on half the turns
+            if turn % 2 == player_agent_1_turns:
+                # take a turn
+                continue_game = take_turn(game, player_agent_1)[0]
+                
+            # use player_agent_2 on the other half
+            else:
+                # take a turn
+                continue_game = take_turn(game, player_agent_2)[0]
+
+            # increment turn counter
+            turn += 1
+
+        # document the winner    
+        if np.argmax(game.player_scores) % 2 == player_agent_1_turns:
+            wins[0] += 1
+        else:
+            wins[1] += 1
+    
+    # return the win totals
+    return wins

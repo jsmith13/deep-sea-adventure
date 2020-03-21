@@ -36,6 +36,11 @@ while True:
     # save the current model
     training_agent.save_models(identifier = str(update))
     
+    # update the exploration/exploitation ratio
+    training_agent.epsilon *= training_agent.epsilon_decay
+    if training_agent.epsilon < training_agent.epsilon_min:
+        training_agent.epsilong = training_agent.epsilon_min
+    
     # update console and counter
     print("Updated target weights. Update #" + str(update))
     update += 1

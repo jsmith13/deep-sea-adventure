@@ -325,28 +325,45 @@ def compare_models(player_agent_1, player_agent_2, games = 1000):
         continue_game = True
 
         # randomly assign player_agent_1 and player_agent_2 to even/odd turns
-        player_agent_1_turns = randint.rvs(0, 1)
+        player_agent_1_turns = randint.rvs(0, 2)
 
         # take turns until the game is over
         while continue_game:
             # use player_agent_1 on half the turns
             if turn % 2 == player_agent_1_turns:
                 # take a turn
-                continue_game = take_turn(game, player_agent_1)[0]
+                continue_game, turn_taken = take_turn(game, player_agent_1)[0:2]
                 
             # use player_agent_2 on the other half
             else:
                 # take a turn
-                continue_game = take_turn(game, player_agent_2)[0]
-
+                continue_game, turn_taken = take_turn(game, player_agent_2)[0:2]
+            
+            # skip to next turn if active player is already back at the sub
+            if turn_taken == False:
+                # update the active player
+                if game.active_player < game.players - 1:
+                    game.active_player += 1
+                else:
+                    game.active_player = 0
+                
+                # next turn
+                continue
+        
+            # update the active player
+            if game.active_player < game.players - 1:
+                game.active_player += 1
+            else:
+                game.active_player = 0
+            
             # increment turn counter
             turn += 1
-
-        # document the winner    
+            
+        # document the winner
         if np.argmax(game.player_scores) % 2 == player_agent_1_turns:
             wins[0] += 1
         else:
             wins[1] += 1
-    
+     
     # return the win totals
     return wins

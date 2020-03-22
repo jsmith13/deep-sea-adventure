@@ -88,7 +88,7 @@ class PlayerAgent:
             turn = np.argmax(turn[0, ])
         else:
             # generate a Q-table for the current gamestate
-            turn = self.turn_around_model.predict(gamestate)
+            turn = self.turn_around_model.predict(np.reshape(gamestate, (1, gamestate.shape[0])))
             
             # take the action with the highest Q-value
             turn = np.argmax(turn)
@@ -106,7 +106,7 @@ class PlayerAgent:
             pickup = np.argmax(pickup[0, ])
         else:
             # generate a Q-table for the current gamestate
-            pickup = self.pick_up_model.predict(gamestate)
+            pickup = self.pick_up_model.predict(np.reshape(gamestate, (1, gamestate.shape[0])))
             
             # take the action with the highest Q-value
             pickup = np.argmax(pickup)
@@ -126,10 +126,10 @@ class PlayerAgent:
                 drop = randint.rvs(0, sum(gamestate[1:33] != -1) + 1)
         else:
             # generate a Q-table for the current gamestate
-            selected_action = self.pick_up_model.predict(gamestate)
+            selected_action = self.pick_up_model.predict(np.reshape(gamestate, (1, gamestate.shape[0])))
             
             # take the action with the highest Q-value
-            drop = np.argmax(selected_token[0:(sum(gamestate[1:33] != -1) + 1)])
+            drop = np.argmax(selected_action[0:(sum(gamestate[1:33] != -1) + 1)])
             drop = int(drop)
             
         # return the decision as an integer

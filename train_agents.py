@@ -43,5 +43,6 @@ while True:
     
     # update console and counter
     print("Updated target weights. Update #" + str(update))
+    print("Updated epsilon. New value " + str(training_agent.epsilon))
     update += 1
     

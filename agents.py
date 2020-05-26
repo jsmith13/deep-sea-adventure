@@ -48,21 +48,22 @@ class PlayerAgent:
         
         # dense
         first_dense_layer = layers.Dense(
-            units = 256,
+            units = 128,
             activation = "relu",
             kernel_regularizer = regularizers.l2(0.01)
         )(input_layer)
         
         # dense
         second_dense_layer = layers.Dense(
-            units = 128,
+            units = 64,
             activation = "relu",
             kernel_regularizer = regularizers.l2(0.01)
         )(first_dense_layer)
         
         # output
         output_layer = layers.Dense(
-            units = available_actions
+            units = available_actions,
+            activation = "linear"
         )(second_dense_layer)
         
         # compile the model
@@ -306,4 +307,4 @@ class PlayerAgent:
     def load_models(self, filepath = "./models/", identifier = ""):
         self.turn_around_model = load_model(filepath + "turn_around_model_" + identifier)
         self.pick_up_model = load_model(filepath + "pick_up_model_" + identifier)
-        self.drop_model = load_model(filepath + "drop_model_" + identifier)
+        self.drop_model = load_model(filepath + "drop_model_" + identifier) 

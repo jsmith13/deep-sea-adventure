@@ -12,6 +12,10 @@ import game_functions
 # initiate a player agent to train
 training_agent = agents.PlayerAgent(players)
 
+# set epsilon parameters
+training_agent.epsilon = 0.9
+training_agent.epsilon_decay = 0.95
+
 # declare a counter for number of complete update cycles
 update = 1
 
@@ -19,13 +23,13 @@ update = 1
 while True:
     # count the number of training cycles
     for i in range(cycles_per_target_update):
-        # simulate games and store them in memory    
+        # simulate games and store them in memory 
         for j in range(games_per_cycle):
             game_log = game_functions.simulate_game(players, training_agent)
             training_agent.store_game(game_log)
         
-            # train the agent using the simulated games
-            training_agent.train_model()
+        # train the agent using the simulated games
+        training_agent.train_model()
             
         # update console
         print("Training cycle " + str(i + 1) + " of " + str(cycles_per_target_update))
